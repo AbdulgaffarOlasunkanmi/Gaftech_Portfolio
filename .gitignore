@@ -1,0 +1,81 @@
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.egg
+*.log
+
+# Virtual environments
+.env/
+venv/
+ENV/
+env/
+.venv/
+
+# -------------------------
+# Environment Variables
+# -------------------------
+*.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Do NOT commit secrets
+secrets.*
+credentials.*
+
+# -------------------------
+# FastAPI / Jinja / Cache
+# -------------------------
+*.db
+*.sqlite3
+*.sqlite
+cache/
+*.pid
+
+# -------------------------
+# Docker
+# -------------------------
+# Local Docker files
+docker-compose.override.yml
+docker-data/
+*.pid
+
+# Volumes and build folders
+volumes/
+data/
+mongo_data/
+**/data/db/
+
+# -------------------------
+# VS Code
+# -------------------------
+.vscode/
+.history/
+
+# -------------------------
+# Python Build Artifacts
+# -------------------------
+build/
+dist/
+*.spec
+
+# -------------------------
+# OS Files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Node / HTMX (if used)
+# -------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

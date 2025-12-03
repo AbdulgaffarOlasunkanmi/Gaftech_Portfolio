@@ -687,26 +687,35 @@
       <!-- /Faq Section -->
 
 
+     <!-- portfolio Section -->
 <section id="portfolio" class="portfolio section-bg bg-light">
     <div class="container">
-
+    <!-- portfolio title -->
         <div class="section-title">
             <h2>Portfolio</h2>
             <p>Recent Projects</p>
         </div>
 
-        <!-- Portfolio Container -->
         <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="100">
 
             {% for project in projects %}
             <div class="col-lg-4 col-md-6 my-2 portfolio-item {{ project.category|lower }}">
                 <div class="portfolio-wrap">
-                    <img src="{{ project.image_url }}" class="img-fluid" alt="{{ project.title }}">
+
+                    <!-- Zoom image -->
+                    <img src="{{ project.image_url }}"
+                         class="img-fluid w-100 object-fit-cover"
+                         style="height:220px; transition: transform .4s;"
+                         onmouseover="this.style.transform='scale(1.05)'"
+                         onmouseout="this.style.transform='scale(1)'"
+                         alt="{{ project.title }}">
+
                     <div class="portfolio-info">
                         <h4>{{ project.title }}</h4>
                         <p>{{ project.category }}</p>
+
                         <div class="portfolio-links">
-                            <a href="{{ project.image_url }}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="{{ project.title }}">
+                            <a data-bs-toggle="modal" data-bs-target="#projectModal{{ project._id }}">
                                 <i class="bx bx-plus"></i>
                             </a>
                             <a href="/project/{{ project._id }}" title="More Details">
@@ -716,13 +725,42 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="projectModal{{ project._id }}" tabindex="-1">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ project.title }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <!-- Zoom inside modal -->
+                            <img src="{{ project.image_url }}"
+                                 class="img-fluid w-100 object-fit-cover mb-3"
+                                 style="max-height:300px; transition: transform .4s;"
+                                 onmouseover="this.style.transform='scale(1.2)'"
+                                 onmouseout="this.style.transform='scale(1)'"
+                                 alt="{{ project.title }}">
+
+                            <p class="text-muted">{{ project.description }}</p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             {% endfor %}
 
         </div>
-        <!-- End Portfolio Container -->
 
     </div>
 </section>
+
+
 
 
 

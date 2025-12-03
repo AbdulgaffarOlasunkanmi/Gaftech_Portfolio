@@ -16,6 +16,8 @@ from bson import ObjectId
 from dotenv import load_dotenv
 import os
 import traceback
+import shutil
+import uuid
 
 from schemas import ContactFormSchema
 from database import contact_collection, admin_collection, projects_collection
@@ -240,19 +242,36 @@ async def upload_project(
     request: Request,
     title: str = Form(...),
     description: str = Form(...),
-    # Add category here:
-    category: str = Form(...),  # <-- NEW
+    category: str = Form(...),
     link: str = Form(None),
     image: UploadFile = File(...),
 ):
-    # ... (image upload logic remains the same)
 
-    image_url = f"/static/uploads/{image.filename}"
+    # Allowed formats
+    allowed_types = ["image/png", "image/jpeg", "image/jpg", "image/webp"]
+    if image.content_type not in allowed_types:
+        raise HTTPException(
+            status_code=400,
+            detail="Unsupported file type. Use PNG, JPG, JPEG, or WEBP."
+        )
+
+    # Generate unique filename
+    ext = image.filename.split(".")[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+
+    # Save image to /static/uploads/
+    save_path = f"static/uploads/{filename}"
+
+    with open(save_path, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+
+    # Image URL for frontend (correct path!)
+    image_url = f"/static/uploads/{filename}"
 
     project = {
         "title": title,
         "description": description,
-        "category": category,  # <-- NEW
+        "category": category,
         "image_url": image_url,
         "link": link if link else "#",
         "created_at": datetime.utcnow(),
@@ -272,6 +291,7 @@ async def view_projects(request: Request):
 
     for p in projects:
         p["_id"] = str(p["_id"])
+
     return templates.TemplateResponse(
         "admin_projects.html", {"request": request, "projects": projects}
     )
